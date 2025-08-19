@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대한민국 주택 분양 완전 정복 인포그래픽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: This infographic SPA follows a narrative structure to guide users from general concepts to specific details. It starts with a high-level overview, introduces the two main pillars (Public vs. Private), then presents a multi-faceted comparison of all 6 types using radar charts for quick visual analysis. It follows with an actionable flowchart to help users navigate their choices, and concludes with a detailed comparison table for those needing more depth. This structure is chosen to make complex information digestible and empower users to make informed decisions. -->
+    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Method -> Justification. 1. Core types comparison -> Compare -> Side-by-side cards -> Clear initial distinction (HTML/CSS). 2. Multi-attribute comparison of 6 types -> Compare -> Radar Charts -> Best for showing trade-offs between Price, Quality, and Stability (Chart.js/Canvas). 3. Decision process -> Organize -> Flowchart -> Guides user action (HTML/CSS with Unicode arrows). 4. Detailed data -> Organize -> Table -> Provides comprehensive data for deep dives (HTML). 5. Target audience -> Inform -> Icon-based list -> Quick visual summary (HTML/Unicode). This plan strictly adheres to the NO SVG/Mermaid constraint. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; height: 280px; max-height: 300px; }
+        .flowchart-box { border: 2px solid; padding: 1rem; border-radius: 0.5rem; text-align: center; font-weight: bold; }
+        .flowchart-arrow { font-size: 2rem; line-height: 1; margin: 0.5rem 0; color: #FFD166; }
+    </style>
+</head>
+<body class="bg-gray-50 text-[#073B4C]">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="./"><h1 class="text-xl md:text-2xl font-bold text-blue-800">🏠 내게 맞는 분양 찾기</h1></a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#guide" class="text-stone-600 hover:text-blue-700 font-medium pb-1 border-b-2 border-transparent transition-all">맞춤 가이드</a>
+                <a href="#dashboard" class="text-stone-600 hover:text-blue-700 font-medium pb-1 border-b-2 border-transparent transition-all">한눈에 비교</a>
+                <a href="#details" class="text-stone-600 hover:text-blue-700 font-medium pb-1 border-b-2 border-transparent transition-all">상세 정보</a>
+                <a href="info.html" class="text-stone-600 hover:text-blue-700 font-medium pb-1 border-b-2 border-transparent transition-all">분양 인포그래픽</a>
+            </div>
+        </nav>
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-black text-[#118AB2]">대한민국 주택 분양, 완전 정복</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">복잡한 주택 분양의 세계, 핵심만 모아 한눈에 비교하고 나에게 맞는 최적의 전략을 찾아보세요.</p>
+        </header>
+
+        <section class="my-16">
+            <h2 class="text-3xl font-bold text-center mb-8">분양의 두 기둥: 공공 vs 민간</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-[#06D6A0]">
+                    <h3 class="text-2xl font-bold mb-3">🏢 공공분양</h3>
+                    <p class="text-gray-700">정부 및 공공기관이 주도하여 **저렴한 가격**으로 공급합니다. 엄격한 소득 및 자산 기준 등 청약 자격이 까다로운 것이 특징입니다.</p>
+                    <div class="mt-4 text-2xl font-bold text-[#06D6A0]">시세의 70-80%</div>
+                    <div class="text-sm text-gray-500">평균 분양가 수준</div>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-[#FF6B6B]">
+                    <h3 class="text-2xl font-bold mb-3">🏗️ 민간분양</h3>
+                    <p class="text-gray-700">브랜드 건설사가 공급하며 **높은 상품성**과 다양한 선택지가 장점입니다. 청약 가점 경쟁이 치열하고 분양가가 높습니다.</p>
+                    <div class="mt-4 text-2xl font-bold text-[#FF6B6B]">시세 기반</div>
+                    <div class="text-sm text-gray-500">분양가 수준</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <h2 class="text-3xl font-bold text-center mb-10">분양 유형별 핵심 특징 비교</h2>
+            <div id="charts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+        </section>
+        
+        <section class="my-20 bg-white p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-10">나에게 맞는 분양 방식 찾기</h2>
+            <div class="flex flex-col items-center">
+                <div class="flowchart-box border-[#118AB2] text-[#118AB2] w-full max-w-md">청약통장이 있나요?</div>
+                <div class="flex w-full max-w-4xl justify-around">
+                    <div class="flex flex-col items-center w-1/2 px-2">
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-box border-[#06D6A0] text-[#06D6A0] w-full">YES</div>
+                        <p class="text-center text-sm mt-2 text-gray-600">공공, 민간, 토지임대부 등<br>대부분의 분양에 도전 가능!</p>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-box border-[#118AB2] text-[#118AB2] w-full">우선순위는?</div>
+                        <div class="flex w-full justify-around mt-4">
+                            <div class="flex flex-col items-center w-1/2 px-1">
+                                <p class="font-bold text-center text-sm text-[#06D6A0]">가격</p>
+                                <div class="flowchart-arrow text-sm">↓</div>
+                                <div class="flowchart-box text-xs p-2 border-[#06D6A0] text-[#06D6A0] w-full">공공분양<br>민간참여<br>토지임대부</div>
+                            </div>
+                            <div class="flex flex-col items-center w-1/2 px-1">
+                                <p class="font-bold text-center text-sm text-[#FF6B6B]">품질</p>
+                                <div class="flowchart-arrow text-sm">↓</div>
+                                <div class="flowchart-box text-xs p-2 border-[#FF6B6B] text-[#FF6B6B] w-full">민간분양<br>민간참여</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center w-1/2 px-2">
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-box border-[#FFD166] text-[#FFD166] w-full">NO</div>
+                        <p class="text-center text-sm mt-2 text-gray-600">무순위 청약, 지역주택조합 등<br>특수 분양을 고려해볼 수 있습니다.</p>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-box border-[#118AB2] text-[#118AB2] w-full">리스크 감수?</div>
+                         <div class="flex w-full justify-around mt-4">
+                            <div class="flex flex-col items-center w-1/2 px-1">
+                                <p class="font-bold text-center text-sm text-[#06D6A0]">낮음</p>
+                                <div class="flowchart-arrow text-sm">↓</div>
+                                <div class="flowchart-box text-xs p-2 border-[#06D6A0] text-[#06D6A0] w-full">무순위 청약</div>
+                            </div>
+                            <div class="flex flex-col items-center w-1/2 px-1">
+                                <p class="font-bold text-center text-sm text-[#FF6B6B]">높음</p>
+                                <div class="flowchart-arrow text-sm">↓</div>
+                                <div class="flowchart-box text-xs p-2 border-[#FF6B6B] text-[#FF6B6B] w-full">지역주택조합</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="my-20">
+            <h2 class="text-3xl font-bold text-center mb-10">수요자 유형별 추천 전략</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <div class="text-5xl mb-4">👤</div>
+                    <h3 class="text-xl font-bold mb-2">청년 및 1-2인 가구</h3>
+                    <p class="text-gray-700">가점이 낮아도 당첨 가능한 **공공분양 추첨제**나 **'뉴:홈' 특별공급**을 적극적으로 공략하는 것이 효과적입니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <div class="text-5xl mb-4">💑</div>
+                    <h3 class="text-xl font-bold mb-2">신혼부부 및 젊은 가구</h3>
+                    <p class="text-gray-700">**신혼부부/신생아 특별공급**은 가장 유리한 카드입니다. 공공과 민간 모두 자격 요건을 꼼꼼히 확인해야 합니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <div class="text-5xl mb-4">👨‍👩‍👧‍👦</div>
+                    <h3 class="text-xl font-bold mb-2">중장년층 (무주택)</h3>
+                    <p class="text-gray-700">긴 무주택 기간과 부양가족 수로 높은 가점을 확보할 수 있으므로, 입지가 좋은 **민간분양 가점제**가 최적의 선택입니다.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-stone-800 text-white mt-16">
+        <div class="container mx-auto px-4 py-6 text-center">
+            <p>&copy; 2025 주택 분양 인터랙티브 가이드. All Rights Reserved.</p>
+            <p class="text-sm text-stone-400 mt-2">본 콘텐츠는 제공된 보고서를 기반으로 제작되었으며, 정보 제공을 목적으로 합니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        const housingData = [
+            {
+                id: 'public',
+                title: '공공분양',
+                summary: '저렴한 가격이 최대 장점이지만, 소득/자산 등 자격 요건이 매우 까다롭습니다.',
+                scores: { price: 5, quality: 3, stability: 5 }
+            },
+            {
+                id: 'private',
+                title: '민간분양',
+                summary: '브랜드, 품질, 입지 등 상품성이 높지만, 분양가가 비싸고 가점 경쟁이 치열합니다.',
+                scores: { price: 2, quality: 5, stability: 4 }
+            },
+            {
+                id: 'cooperative',
+                title: '민간참여 공공분양',
+                summary: '저렴한 가격과 높은 품질을 모두 잡았지만, 물량이 적고 경쟁이 치열할 수 있습니다.',
+                scores: { price: 4, quality: 4, stability: 5 }
+            },
+            {
+                id: 'leftover',
+                title: '무순위 청약',
+                summary: '청약통장 없이 도전 가능하지만, 물량이 비정기적이고 정책 변화에 민감합니다.',
+                scores: { price: 4, quality: 3, stability: 3 }
+            },
+            {
+                id: 'association',
+                title: '지역주택조합',
+                summary: '가격은 가장 저렴하지만, 사업 지연, 추가 분담금 등 예측 불가능한 리스크가 매우 큽니다.',
+                scores: { price: 5, quality: 2, stability: 1 }
+            },
+            {
+                id: 'land-leasehold',
+                title: '토지임대부',
+                summary: '초기 분양가는 매우 저렴하나, 매월 토지 임대료를 내야하고 시세차익에 제한이 있습니다.',
+                scores: { price: 5, quality: 3, stability: 4 }
+            }
+        ];
+
+        const createRadarChart = (canvasId, data) => {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const chartLabels = ['가격 경쟁력', '상품성', '사업 안정성'];
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: data.title,
+                        data: [data.scores.price, data.scores.quality, data.scores.stability],
+                        backgroundColor: 'rgba(17, 138, 178, 0.2)',
+                        borderColor: 'rgba(17, 138, 178, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(17, 138, 178, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(17, 138, 178, 1)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(7, 59, 76, 0.1)' },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                            grid: { color: 'rgba(7, 59, 76, 0.1)' },
+                            pointLabels: {
+                                font: { size: 14, weight: 'bold' },
+                                color: '#073B4C'
+                            },
+                            ticks: { display: false, stepSize: 1 }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                },
+                                label: function(context) {
+                                    return `점수: ${context.raw}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        const grid = document.getElementById('charts-grid');
+        housingData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300';
+            card.innerHTML = `
+                <h3 class="text-2xl font-bold text-center mb-2 text-[#118AB2]">${item.title}</h3>
+                <p class="text-gray-600 text-center mb-4 h-16">${item.summary}</p>
+                <div class="chart-container">
+                    <canvas id="chart-${item.id}"></canvas>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+        
+        housingData.forEach(item => {
+            createRadarChart(`chart-${item.id}`, item);
+        });
+    </script>
+</body>
+</html>
